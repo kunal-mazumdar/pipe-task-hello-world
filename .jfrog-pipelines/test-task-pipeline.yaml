@@ -2,7 +2,7 @@ template: true
 valuesFilePath: ./values.yml
 
 resources:
-  - name: hello_world_task_gitrepo
+  - name: hello_world_task_gitrepo_kunal
     type: GitRepo
     configuration:
       path: {{ .Values.repoPath }}
@@ -30,12 +30,12 @@ pipelines:
         type: Bash
         configuration:
           inputResources:
-            - name: hello_world_task_gitrepo
+            - name: hello_world_task_gitrepo_kunal
           integrations:
             - name: {{ .Values.artIntegration }}
         execution:
           onExecute:
-            - pushd $res_hello_world_task_gitrepo_resourcePath
+            - pushd $res_hello_world_task_gitrepo_kunal_resourcePath
             # Configure JFrog CLI
             - jfrog npmc --repo-resolve $RESOLVE_REPO
             # Install npm dependencies
@@ -45,7 +45,7 @@ pipelines:
             - popd
 
             # Run task
-            - task: $res_hello_world_task_gitrepo_resourcePath
+            - task: $res_hello_world_task_gitrepo_kunal_resourcePath
               id: hello_world_test
               input:
                 name: "developer"
@@ -79,12 +79,12 @@ pipelines:
         type: PowerShell
         configuration:
           inputResources:
-            - name: hello_world_task_gitrepo
+            - name: hello_world_task_gitrepo_kunal
           integrations:
             - name: {{ .Values.artIntegration }}
         execution:
           onExecute:
-            - pushd $res_hello_world_task_gitrepo_resourcePath
+            - pushd $res_hello_world_task_gitrepo_kunal_resourcePath
             # Configure JFrog CLI
             - jfrog npmc --repo-resolve $RESOLVE_REPO
             # Install npm dependencies
@@ -94,7 +94,7 @@ pipelines:
             - popd
 
             # Run task
-            - task: $res_hello_world_task_gitrepo_resourcePath
+            - task: $res_hello_world_task_gitrepo_kunal_resourcePath
               id: hello_world_test
               input:
                 name: "developer"

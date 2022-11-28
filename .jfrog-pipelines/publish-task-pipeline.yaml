@@ -2,7 +2,7 @@ template: true
 valuesFilePath: ./values.yml
 
 resources:
-  - name: hello_world_task_publish_gitrepo
+  - name: hello_world_task_publish_gitrepo_kunal
     type: GitRepo
     configuration:
       path: {{ .Values.repoPath }}
@@ -33,7 +33,7 @@ pipelines:
         type: Bash
         configuration:
           inputResources:
-            - name: hello_world_task_publish_gitrepo
+            - name: hello_world_task_publish_gitrepo_kunal
               trigger: false
           integrations:
             - name: {{ .Values.artIntegration }}
@@ -42,7 +42,7 @@ pipelines:
             # Make sure version was provided
             - test -n "$TASK_VERSION" -a "$TASK_VERSION" != "0.0.0"
 
-            - pushd $res_hello_world_task_publish_gitrepo_resourcePath
+            - pushd $res_hello_world_task_publish_gitrepo_kunal_resourcePath
             # Configure JFrog CLI
             - jfrog npmc --repo-resolve $RESOLVE_REPO
             # Install npm dependencies
@@ -55,7 +55,7 @@ pipelines:
             - task: jfrog/publish-task@v0.0.2
               id: publish-hello-world
               input:
-                path: $res_hello_world_task_publish_gitrepo_resourcePath
+                path: $res_hello_world_task_publish_gitrepo_kunal_resourcePath
                 targetRepository: $TASK_REPOSITORY
                 taskName: $TASK_NAME
                 taskVersion: $TASK_VERSION
