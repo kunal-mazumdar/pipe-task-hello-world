@@ -11,15 +11,7 @@ input:
 execution:
   - echo ${staticcheck_version}
   - go install "honnef.co/go/tools/cmd/staticcheck@latest"
-  - |
-    write_output() {
-      if [ -z "${file}" ]; then
-        cat
-      else
-        cat >"${file}"
-      fi
-    }
-  - $(go env GOPATH)/bin/staticcheck ./... | write_output
+  - $(go env GOPATH)/bin/staticcheck .
 #  - node16 dist/index.js main
 hooks:
   onStepComplete:
