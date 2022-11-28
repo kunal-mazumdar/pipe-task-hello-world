@@ -6,13 +6,10 @@ labels:
   - staticcheck
   - sdk
 input:
-  - name: staticcheck_version
+  - name: version
     description: Version of staticcheck. Defaults to "latest"
 execution:
-  - echo ${staticcheck_version}
-  - go install "honnef.co/go/tools/cmd/staticcheck@latest"
-  - $(go env GOPATH)/bin/staticcheck .
-#  - node16 dist/index.js main
+  - node16 dist/index.js main
 hooks:
   onStepComplete:
     - node16 dist/index.js cleanup

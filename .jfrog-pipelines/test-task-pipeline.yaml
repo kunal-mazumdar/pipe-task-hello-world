@@ -63,16 +63,10 @@ pipelines:
 
             # Run task
             - task: $res_go_staticchecker_gitRepo_resourcePath
-              id: hello_world_test
+              id: go_staticcheck
               input:
-                name: "developer"
+                version: "latest"
 
-            # Check task output
-            - echo "task output is $OUT_hello_world_test_greeting"
-            # Check exported environment variable
-            - echo "path to greeting file is $GREETING_FILE"
-            # Check task generated file
-            - cat ./greeting.txt
           onComplete:
             - echo "Step done!"
 

@@ -3,25 +3,26 @@ const path = require("path");
 const fs = require("fs");
 const os = require("os");
 
-function main() {
+async function main() {
+
+  // TODO: Validate if Go installed
+
   // Read and validate task input
-  const nameInput = tasks.getInput("name");
-  if (nameInput == "") {
-    tasks.error("name input cannot be empty");
-    return process.exit(1);
+  let staticCheckVersion = tasks.getInput("version");
+  if (staticCheckVersion == "") {
+    staticCheckVersion = "latest";
   }
 
-  // Create greeting file at current working directory
-  const pathToFile = path.join(tasks.getWorkingDir(), "greeting.txt");
+  let workingDirectory = tasks.getInput("working-directory");
+  if (workingDirectory == "") {
+    workingDirectory = ".";
+  }
 
-  // Export environment variable containing path to greeting file
-  tasks.exportEnvironmentVariable("GREETING_FILE", pathToFile);
+  await tasks.execute(`go install "honnef.co/go/tools/cmd/staticcheck@${staticCheckVersion}"`);
+  await tasks.execute(`$(go env GOPATH)/bin/staticcheck ${workingDirectory}"`);
 
-  // Save path to file to task state
-  tasks.setState("pathToFile", pathToFile);
-
-  // Set greeting message as task output
-  tasks.setOutput("greeting", greeting);
+  // const installScript = path.join(tasks.getWorkingDir(), "install.sh");
+  // await tasks.execute(`sh ${installScript}`);
 }
 
 function cleanup() {
