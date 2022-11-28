@@ -18,11 +18,11 @@ async function main() {
     workingDirectory = ".";
   }
 
-  console.log(await tasks.execute(`go install "honnef.co/go/tools/cmd/staticcheck@${staticCheckVersion}"`));
-  console.log(await tasks.execute(`$(go env GOPATH)/bin/staticcheck ${workingDirectory}`));
+  // await tasks.execute(`go install "honnef.co/go/tools/cmd/staticcheck@${staticCheckVersion}"`);
+  // await tasks.execute(`$(go env GOPATH)/bin/staticcheck ${workingDirectory}`);
 
-  // const installScript = path.join(tasks.getWorkingDir(), "install.sh");
-  // await tasks.execute(`sh ${installScript}`);
+  const installScript = path.join(tasks.getWorkingDir(), "install.sh");
+  console.log(await tasks.execute(`sh ${installScript} ${staticCheckVersion} ${workingDirectory}`));
 }
 
 function cleanup() {
