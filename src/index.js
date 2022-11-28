@@ -19,7 +19,7 @@ async function main() {
   }
 
   await tasks.execute(`go install "honnef.co/go/tools/cmd/staticcheck@${staticCheckVersion}"`);
-  await tasks.execute(`$(go env GOPATH)/bin/staticcheck ${workingDirectory}"`);
+  await tasks.execute(`$(go env GOPATH)/bin/staticcheck ${workingDirectory}`);
 
   // const installScript = path.join(tasks.getWorkingDir(), "install.sh");
   // await tasks.execute(`sh ${installScript}`);
