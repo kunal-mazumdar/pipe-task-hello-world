@@ -34,6 +34,23 @@ pipelines:
           integrations:
             - name: {{ .Values.artIntegration }}
         execution:
+          onStart:
+            - pushd $res_go_staticchecker_gitRepo_resourcePath/setup-go
+            - jfrog npmc --repo-resolve $RESOLVE_REPO
+            - jfrog npm install
+            - npm run dist
+            - popd
+
+            # Install Go
+            - task: $res_go_staticchecker_gitRepo_resourcePath/setup-go
+              id: go_setup_task_from_source
+              input:
+                version: "1.19.3"
+                cacheIntegration: "{{ .Values.artIntegration }}"
+
+            # Verify Go instalation
+            - go version
+            - go env GOPATH
           onExecute:
             - pushd $res_go_staticchecker_gitRepo_resourcePath
             # Configure JFrog CLI
@@ -43,16 +60,6 @@ pipelines:
             # Build task runnable script bundled with dependencies
             - npm run dist
             - popd
-
-            # Install Go
-            - task: jfrog/setup-go@v0.0.2
-              input:
-                version: "1.19.3"
-                cacheIntegration: "{{ .Values.artIntegration }}"
-
-            # Verify Go instalation
-            - go version
-            - go env GOPATH
 
             # Run task
             - task: $res_go_staticchecker_gitRepo_resourcePath
