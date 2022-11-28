@@ -1,4 +1,5 @@
 const tasks = require("jfrog-pipelines-tasks");
+const os = require("os");
 
 async function downloadGo(version, targetFolder, cacheIntegration, cacheRepository) {
   const goUrl = computeDownloadUrl(version);
@@ -18,7 +19,7 @@ function computeDownloadUrl(version) {
 }
 
 function getOsFamily() {
-  return tasks.getOperatingSystemFamily().toLowerCase();
+  return os.platform().toLowerCase();
 }
 
 function getArchitecture() {
