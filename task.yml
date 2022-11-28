@@ -1,19 +1,26 @@
-name: hello-world
-description: My First Pipelines Task
-source: github.com/elioengcomp/jfrog-pipelines-task-hello-world
+name: go-staticcheck
+description: Pipelines task for Go staticcheck for static code analysis
+source: github.com/kunal-mazumdar/jfrog-pipelines-task-hello-world
 labels:
-  - helloworld
-  - example
-  - node
+  - go
+  - staticcheck
   - sdk
 input:
-  - name: name
-    description: Name to be greeted.
-output:
-  - name: greeting
-    description: Greeting message produced by the task.
+  - name: staticcheck_version
+    description: Version of staticcheck. Defaults to "latest"
 execution:
-  - node16 dist/index.js main
+  - echo ${staticcheck_version}
+  - go install "honnef.co/go/tools/cmd/staticcheck@latest"
+  - |
+    write_output() {
+      if [ -z "${file}" ]; then
+        cat
+      else
+        cat >"${file}"
+      fi
+    }
+  - $(go env GOPATH)/bin/staticcheck ./... | write_output
+#  - node16 dist/index.js main
 hooks:
   onStepComplete:
     - node16 dist/index.js cleanup

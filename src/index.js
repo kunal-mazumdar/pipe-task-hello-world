@@ -11,13 +11,8 @@ function main() {
     return process.exit(1);
   }
 
-  // Compute greeting message
-  const greeting = "Hello " + nameInput + "!";
-  tasks.info(greeting);
-
   // Create greeting file at current working directory
   const pathToFile = path.join(tasks.getWorkingDir(), "greeting.txt");
-  fs.writeFileSync(pathToFile, greeting + os.EOL);
 
   // Export environment variable containing path to greeting file
   tasks.exportEnvironmentVariable("GREETING_FILE", pathToFile);
@@ -30,14 +25,7 @@ function main() {
 }
 
 function cleanup() {
-  // Remove greeting file if exists
-  const pathToFile = tasks.getState("pathToFile");
-  if (pathToFile && fs.existsSync(pathToFile)) {
-    tasks.info(`Deleting greetings file at ${pathToFile}`);
-    fs.unlinkSync(pathToFile);
-  } else {
-    tasks.info(`Greetings file not found. Skipping...`);
-  }
+  tasks.info(`No cleanup set yet!`);
 }
 
 // Parse command arguments
