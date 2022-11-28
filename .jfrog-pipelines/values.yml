@@ -1,5 +1,5 @@
 repoPath: kunal-mazumdar/pipe-task-hello-world
 mainBranch: master
-gitIntegration: mygithub
+gitIntegration: int_github_kunal
 artIntegration: int_default_artifactory
 windowsNodePool:
