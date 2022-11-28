@@ -12,7 +12,7 @@ resources:
       cloneProtocol: https
 
 pipelines:
-  - name: hello_world_task_test
+  - name: hello_world_task_test_kunal
     configuration:
       jfrogCliVersion: 2
       runtime:
