@@ -2,7 +2,7 @@ template: true
 valuesFilePath: ./values.yml
 
 resources:
-  - name: hello_world_task_gitrepo_kunal
+  - name: go_staticchecker_gitRepo
     type: GitRepo
     configuration:
       path: {{ .Values.repoPath }}
@@ -12,7 +12,7 @@ resources:
       cloneProtocol: https
 
 pipelines:
-  - name: hello_world_task_test_kunal
+  - name: go_staticchecker
     configuration:
       jfrogCliVersion: 2
       runtime:
@@ -26,16 +26,16 @@ pipelines:
         readOnly:
           RESOLVE_REPO: npm-virtual
     steps:
-      - name: test_task
+      - name: go_staticchecker_task_test
         type: Bash
         configuration:
           inputResources:
-            - name: hello_world_task_gitrepo_kunal
+            - name: go_staticchecker_gitRepo
           integrations:
             - name: {{ .Values.artIntegration }}
         execution:
           onExecute:
-            - pushd $res_hello_world_task_gitrepo_kunal_resourcePath
+            - pushd $res_go_staticchecker_gitRepo_resourcePath
             # Configure JFrog CLI
             - jfrog npmc --repo-resolve $RESOLVE_REPO
             # Install npm dependencies
@@ -44,8 +44,18 @@ pipelines:
             - npm run dist
             - popd
 
+            # Install Go
+            - task: jfrog/setup-go@v0.0.2
+              input:
+                version: "1.19.3"
+                cacheIntegration: "{{ .Values.artIntegration }}"
+
+            # Verify Go instalation
+            - go version
+            - go env GOPATH
+
             # Run task
-            - task: $res_hello_world_task_gitrepo_kunal_resourcePath
+            - task: $res_go_staticchecker_gitRepo_resourcePath
               id: hello_world_test
               input:
                 name: "developer"
@@ -79,12 +89,12 @@ pipelines:
         type: PowerShell
         configuration:
           inputResources:
-            - name: hello_world_task_gitrepo_kunal
+            - name: go_staticchecker_gitRepo
           integrations:
             - name: {{ .Values.artIntegration }}
         execution:
           onExecute:
-            - pushd $res_hello_world_task_gitrepo_kunal_resourcePath
+            - pushd $res_go_staticchecker_gitRepo_resourcePath
             # Configure JFrog CLI
             - jfrog npmc --repo-resolve $RESOLVE_REPO
             # Install npm dependencies
@@ -94,7 +104,7 @@ pipelines:
             - popd
 
             # Run task
-            - task: $res_hello_world_task_gitrepo_kunal_resourcePath
+            - task: $res_go_staticchecker_gitRepo_resourcePath
               id: hello_world_test
               input:
                 name: "developer"
